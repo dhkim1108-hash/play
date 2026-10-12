@@ -22,7 +22,7 @@
             min-height: 100vh;
         }
 
-        /* ☁️ 상단 포근한 구름 헤더 ☁️ */
+        /* ☁️ 상단 헤더 ☁️ */
         header {
             background: #ffffff;
             padding: 45px 20px 35px;
@@ -30,7 +30,6 @@
             border-bottom-left-radius: 40px;
             border-bottom-right-radius: 40px;
             box-shadow: 0 10px 25px rgba(186, 230, 253, 0.5);
-            position: relative;
         }
 
         .header-badge {
@@ -83,7 +82,7 @@
             font-weight: 700;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(186, 230, 253, 0.3);
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
         }
 
         .tab-button.active {
@@ -91,7 +90,6 @@
             color: #ffffff !important;
             border-color: #38bdf8 !important;
             box-shadow: 0 6px 16px rgba(56, 189, 248, 0.4) !important;
-            transform: translateY(-2px);
         }
 
         /* ☁️ 탭 콘텐츠 카드 ☁️ */
@@ -205,7 +203,6 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        /* ☁️ 푸터 ☁️ */
         footer {
             text-align: center;
             padding: 30px 20px 40px;
@@ -229,11 +226,11 @@
 
         <!-- 🔘 구름 탭 버튼 🔘 -->
         <nav>
-            <button class="tab-button active" onclick="showTab('tab-info', this)">📢 행사 안내</button>
-            <button class="tab-button" onclick="showTab('tab-bracket', this)">🪢 줄다리기 대진표</button>
-            <button class="tab-button" onclick="showTab('tab-timetable', this)">⏰ 상세 시간표</button>
-            <button class="tab-button" onclick="showTab('tab-rules', this)">🎯 경기 설명</button>
-            <button class="tab-button" onclick="showTab('tab-notice', this)">💡 유의 사항</button>
+            <button class="tab-button active" onclick="changeTab(event, 'tab-info')">📢 행사 안내</button>
+            <button class="tab-button" onclick="changeTab(event, 'tab-bracket')">🪢 줄다리기 대진표</button>
+            <button class="tab-button" onclick="changeTab(event, 'tab-timetable')">⏰ 상세 시간표</button>
+            <button class="tab-button" onclick="changeTab(event, 'tab-rules')">🎯 경기 설명</button>
+            <button class="tab-button" onclick="changeTab(event, 'tab-notice')">💡 유의 사항</button>
         </nav>
 
         <!-- 1️⃣ [탭 1] 행사 안내 -->
@@ -263,7 +260,7 @@
             </div>
         </section>
 
-        <!-- 2️⃣ [탭 2] 줄다리기 대진표 (요청사항 완전 반영!) -->
+        <!-- 2️⃣ [탭 2] 줄다리기 대진표 -->
         <section id="tab-bracket" class="tab-content">
             <h2 class="section-title">🪢 학년별 줄다리기 예선 대진표</h2>
             <p style="font-size: 13px; color: #64748b; margin-bottom: 18px;">* 각 경기에서 이긴 반이 결승전(다음 라운드)으로 진출합니다!</p>
@@ -314,7 +311,7 @@
 
             <!-- 🥈 2학년 대진표 -->
             <div class="grade-bracket-box">
-                <span class="grade-tag" style="background-color: #38bdf8;">☁️ 2학년 예선 대진</span>
+                <span class="grade-tag">☁️ 2학년 예선 대진</span>
 
                 <div class="match-row">
                     <span style="color: #0284c7;">1경기</span>
@@ -359,7 +356,7 @@
 
             <!-- 🥉 3학년 대진표 -->
             <div class="grade-bracket-box">
-                <span class="grade-tag" style="background-color: #38bdf8;">☁️ 3학년 예선 대진</span>
+                <span class="grade-tag">☁️ 3학년 예선 대진</span>
 
                 <div class="match-row">
                     <span style="color: #0284c7;">1경기</span>
@@ -440,7 +437,7 @@
                 <h3 style="color: #0284c7; font-size: 16px; margin-bottom: 8px;">🪢 학년별 줄다리기 진행 규칙</h3>
                 <p style="font-size: 14px; color: #475569; line-height: 1.7;">
                     1. 각 반 인원이 참여하며 신호에 맞춰 중앙선을 자기 진영으로 당깁니다.<br>
-                    2. 예선전에서 승리한 반은 결승전 진출권(<span style="color: #f59e0b; font-weight: 800;">?</span> 위치)을 얻게 됩니다.<br>
+                    2. 예선전에서 승리한 반은 결승전 진출권(? 위치)을 얻게 됩니다.<br>
                     3. 부전승 반(1학년 5반, 3학년 5반)은 경기 없이 자동으로 결승에 직행합니다.
                 </p>
             </div>
@@ -450,4 +447,39 @@
         <section id="tab-notice" class="tab-content">
             <h2 class="section-title">💡 안전 수칙 및 유의사항</h2>
             <ul style="padding-left: 20px; color: #475569; font-size: 14px; line-height: 1.8;">
-                <li>줄다리기 진행 시 손 미끄럼 방지를 위해 수
+                <li>줄다리기 진행 시 손 미끄럼 방지를 위해 수건을 준비해 주세요.</li>
+                <li>경기 전 준비운동을 필수 실시하여 부상을 예방합니다.</li>
+                <li>이상 발생 시 즉시 본부석 <b>의무팀</b>을 방문해 주세요.</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- ☁️ 푸터 ☁️ -->
+    <footer>
+        <p>© 2026 한가람 체육활동 운영위원회. All rights reserved.</p>
+    </footer>
+
+    <!-- 💡 클릭 문제 해결 자바스크립트 💡 -->
+    <script>
+        function changeTab(evt, tabId) {
+            // 1. 모든 탭 숨기기
+            var contents = document.getElementsByClassName("tab-content");
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].classList.remove("active");
+            }
+
+            // 2. 모든 버튼 비활성화
+            var buttons = document.getElementsByClassName("tab-button");
+            for (var j = 0; j < buttons.length; j++) {
+                buttons[j].classList.remove("active");
+            }
+
+            // 3. 선택한 탭 및 버튼만 활성화
+            document.getElementById(tabId).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+
+</body>
+</html>
