@@ -3,101 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 한가람 한마음 체육대회 🎈</title>
+    <title>2026 한가람 체육활동</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #fffbf2; font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; color: #4a3e3d; line-height: 1.6;">
+<body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: #0f172a; line-height: 1.6; -webkit-font-smoothing: antialiased;">
 
-    <!-- 🎈 메인 상단 헤더 🎈 -->
-    <header style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #a1c4fd 100%); padding: 45px 20px 40px 20px; text-align: center; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; box-shadow: 0 10px 25px rgba(255, 154, 158, 0.3); border-bottom: 5px solid #ffffff;">
-        <span style="display: inline-block; background-color: #ffffff; color: #ff6b81; font-weight: 800; padding: 8px 22px; border-radius: 30px; font-size: 14px; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(255, 107, 129, 0.2); border: 2px solid #ffe1e6;">
-            🎀 2026 한가람 체육활동 운영계획 🎀
-        </span>
-        <h1 style="color: #ffffff; font-size: 32px; font-weight: 900; margin: 0 0 10px 0; text-shadow: 2px 3px 0px #ff6b81, 4px 5px 0px rgba(0,0,0,0.1); letter-spacing: -0.5px;">
-            🏃‍♀️ 2026 한가람 한마음 체육대회 🏃‍♂️
-        </h1>
-        <p style="color: #4a3e3d; font-size: 15px; margin: 0; font-weight: bold; background-color: rgba(255, 255, 255, 0.7); display: inline-block; padding: 6px 18px; border-radius: 20px;">
-            ✨ 아래 버튼을 눌러 원하는 정보를 확인해보세요! ✨
-        </p>
+    <!-- 🌟 상단 뷰포트 헤더 🌟 -->
+    <header style="background: #ffffff; padding: 48px 24px 32px; text-align: center; border-bottom: 1px solid #e2e8f0;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <span style="display: inline-block; background-color: #eff6ff; color: #2563eb; font-weight: 600; padding: 6px 14px; border-radius: 9999px; font-size: 13px; letter-spacing: -0.2px; margin-bottom: 16px;">
+                2026 한가람 체육활동[cite: 1]
+            </span>
+            <h1 style="font-size: 32px; font-weight: 800; color: #0f172a; letter-spacing: -0.8px; margin: 0 0 12px 0;">
+                2026 한가람 한마음 체육대회
+            </h1>
+            <p style="font-size: 16px; color: #64748b; margin: 0; font-weight: 400; letter-spacing: -0.3px;">
+                함께 즐기고 소통하며 하나 되는 즐거운 축제의 장
+            </p>
+        </div>
     </header>
 
-    <!-- 🎈 메인 컨테이너 🎈 -->
-    <main style="max-width: 800px; margin: 0 auto; padding: 30px 20px;">
+    <!-- 🌟 메인 레이아웃 🌟 -->
+    <main style="max-width: 800px; margin: 0 auto; padding: 32px 20px;">
 
-        <!-- 🔘 항목별 메뉴 버튼 (탭 버튼 영역) 🔘 -->
-        <nav style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 25px;">
-            <button id="btn-info" onclick="openTab('tab-info', 'btn-info')" style="background-color: #ff6b81; color: #ffffff; border: none; padding: 14px 10px; border-radius: 20px; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: 0 6px 15px rgba(255, 107, 129, 0.3); transition: all 0.2s;">
-                📢 행사 안내
+        <!-- 🔘 모던 세그먼트 탭 메뉴 🔘 -->
+        <nav style="display: flex; background-color: #e2e8f0; padding: 4px; border-radius: 14px; gap: 4px; margin-bottom: 32px;">
+            <button id="btn-info" onclick="openTab('tab-info', 'btn-info')" style="flex: 1; background-color: #ffffff; color: #0f172a; border: none; padding: 10px 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.2s;">
+                행사 안내
             </button>
-            <button id="btn-timetable" onclick="openTab('tab-timetable', 'btn-timetable')" style="background-color: #ffffff; color: #776665; border: 2px solid #ffe3e8; padding: 14px 10px; border-radius: 20px; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: all 0.2s;">
-                ⏰ 상세 시간표
+            <button id="btn-timetable" onclick="openTab('tab-timetable', 'btn-timetable')" style="flex: 1; background-color: transparent; color: #64748b; border: none; padding: 10px 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                상세 일정
             </button>
-            <button id="btn-rules" onclick="openTab('tab-rules', 'btn-rules')" style="background-color: #ffffff; color: #776665; border: 2px solid #ffe3e8; padding: 14px 10px; border-radius: 20px; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: all 0.2s;">
-                🎯 경기 설명
+            <button id="btn-rules" onclick="openTab('tab-rules', 'btn-rules')" style="flex: 1; background-color: transparent; color: #64748b; border: none; padding: 10px 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                경기 설명
             </button>
-            <button id="btn-notice" onclick="openTab('tab-notice', 'btn-notice')" style="background-color: #ffffff; color: #776665; border: 2px solid #ffe3e8; padding: 14px 10px; border-radius: 20px; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: all 0.2s;">
-                💡 유의 사항
+            <button id="btn-notice" onclick="openTab('tab-notice', 'btn-notice')" style="flex: 1; background-color: transparent; color: #64748b; border: none; padding: 10px 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                유의 사항
             </button>
         </nav>
 
-        <!-- 1️⃣ [탭 1] 행사 기본 안내 섹션 -->
-        <section id="tab-info" class="tab-content" style="display: block; background-color: #ffffff; border-radius: 30px; padding: 30px; box-shadow: 0 10px 25px rgba(255, 182, 193, 0.15); border: 3px solid #ffe3e8;">
-            <h2 style="font-size: 22px; color: #ff6b81; margin: 0 0 20px 0; border-bottom: 3px dashed #ffd1dc; padding-bottom: 12px;">
-                📢 행사 기본 정보
-            </h2>
-            <table style="width: 100%; border-collapse: separate; border-spacing: 12px;">
-                <tr>
-                    <td style="background-color: #fff5f6; border: 2px solid #ffdde1; padding: 18px; border-radius: 20px; width: 50%; vertical-align: top;">
-                        <div style="color: #ff6b81; font-size: 14px; font-weight: bold; margin-bottom: 6px;">📅 행사 일시</div>
-                        <div style="font-size: 16px; font-weight: 800; color: #333333;">2026년 9월 28일 (월)</div>
-                        <div style="font-size: 13px; color: #776665; margin-top: 4px;">09:00 ~ 16:30 (전일 진행)</div>
-                    </td>
-                    <td style="background-color: #f0f7ff; border: 2px solid #d4e6ff; padding: 18px; border-radius: 20px; width: 50%; vertical-align: top;">
-                        <div style="color: #3b82f6; font-size: 14px; font-weight: bold; margin-bottom: 6px;">📍 행사 장소</div>
-                        <div style="font-size: 16px; font-weight: 800; color: #333333;">학교 대운동장 & 체육관</div>
-                        <div style="font-size: 13px; color: #667788; margin-top: 4px;">우천 시 체육관 전면 진행</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color: #fffde7; border: 2px solid #ffe082; padding: 18px; border-radius: 20px; vertical-align: top;">
-                        <div style="color: #f59e0b; font-size: 14px; font-weight: bold; margin-bottom: 6px;">👟 복장 및 드레스코드</div>
-                        <div style="font-size: 15px; font-weight: 800; color: #333333;">팀별 단체 티셔츠 & 운동화</div>
-                        <div style="font-size: 13px; color: #776655; margin-top: 4px;">안전을 위해 슬리퍼/구두 금지!</div>
-                    </td>
-                    <td style="background-color: #f3f0ff; border: 2px solid #ddd6fe; padding: 18px; border-radius: 20px; vertical-align: top;">
-                        <div style="color: #8b5cf6; font-size: 14px; font-weight: bold; margin-bottom: 6px;">🎒 필수 준비물</div>
-                        <div style="font-size: 15px; font-weight: 800; color: #333333;">개인 텀블러, 땀수건, 모자</div>
-                        <div style="font-size: 13px; color: #665577; margin-top: 4px;">지정 식수대에서 친환경 음용</div>
-                    </td>
-                </tr>
-            </table>
+        <!-- 1️⃣ [탭 1] 행사 안내 -->
+        <section id="tab-info" class="tab-content" style="display: block; background-color: #ffffff; border-radius: 20px; padding: 32px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <div style="margin-bottom: 24px;">
+                <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 6px 0; letter-spacing: -0.5px;">행사 개요</h2>
+                <p style="font-size: 14px; color: #64748b; margin: 0;">체육대회 참석을 위한 기본 안내 사항입니다.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+                <div style="background-color: #f8fafc; border: 1px solid #f1f5f9; padding: 20px; border-radius: 14px;">
+                    <div style="font-size: 12px; font-weight: 600; color: #2563eb; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Date & Time</div>
+                    <div style="font-size: 16px; font-weight: 700; color: #0f172a;">2026년 9월 28일 (월)[cite: 1]</div>
+                    <div style="font-size: 13px; color: #64748b; margin-top: 2px;">09:00 - 16:30</div>
+                </div>
+
+                <div style="background-color: #f8fafc; border: 1px solid #f1f5f9; padding: 20px; border-radius: 14px;">
+                    <div style="font-size: 12px; font-weight: 600; color: #2563eb; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Location</div>
+                    <div style="font-size: 16px; font-weight: 700; color: #0f172a;">대운동장 및 체육관</div>
+                    <div style="font-size: 13px; color: #64748b; margin-top: 2px;">우천 시 체육관 진행</div>
+                </div>
+
+                <div style="background-color: #f8fafc; border: 1px solid #f1f5f9; padding: 20px; border-radius: 14px;">
+                    <div style="font-size: 12px; font-weight: 600; color: #2563eb; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Dress Code</div>
+                    <div style="font-size: 16px; font-weight: 700; color: #0f172a;">팀 단체티 & 운동화</div>
+                    <div style="font-size: 13px; color: #64748b; margin-top: 2px;">슬리퍼/구두 착용 불가</div>
+                </div>
+
+                <div style="background-color: #f8fafc; border: 1px solid #f1f5f9; padding: 20px; border-radius: 14px;">
+                    <div style="font-size: 12px; font-weight: 600; color: #2563eb; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Supplies</div>
+                    <div style="font-size: 16px; font-weight: 700; color: #0f172a;">개인 텀블러, 수건, 모자</div>
+                    <div style="font-size: 13px; color: #64748b; margin-top: 2px;">식수대 자유 이용 가능</div>
+                </div>
+            </div>
         </section>
 
-        <!-- 2️⃣ [탭 2] 상세 시간표 섹션 -->
-        <section id="tab-timetable" class="tab-content" style="display: none; background-color: #ffffff; border-radius: 30px; padding: 30px; box-shadow: 0 10px 25px rgba(255, 182, 193, 0.15); border: 3px solid #ffe3e8;">
-            <h2 style="font-size: 22px; color: #ff6b81; margin: 0 0 10px 0; border-bottom: 3px dashed #ffd1dc; padding-bottom: 12px;">
-                ⏰ 체육대회 상세 시간표
-            </h2>
-            <p style="font-size: 13px; color: #887776; margin-bottom: 20px;">* 각 경기 일정은 현장 진행 상황에 따라 약간 변경될 수 있습니다.</p>
+        <!-- 2️⃣ [탭 2] 상세 일정 -->
+        <section id="tab-timetable" class="tab-content" style="display: none; background-color: #ffffff; border-radius: 20px; padding: 32px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <div style="margin-bottom: 24px;">
+                <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 6px 0; letter-spacing: -0.5px;">타임테이블</h2>
+                <p style="font-size: 14px; color: #64748b; margin: 0;">현장 상황에 따라 일정이 일부 조정될 수 있습니다.</p>
+            </div>
 
-            <div style="display: flex; flex-direction: column; gap: 14px;">
-                <div style="background-color: #fff9fa; border-radius: 20px; padding: 16px 20px; border: 1.5px solid #ffe3e8;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-                        <span style="background-color: #ff85a1; color: #ffffff; font-weight: bold; padding: 5px 14px; border-radius: 14px; font-size: 13px;">09:00 - 09:30</span>
-                        <span style="font-size: 13px; font-weight: bold; color: #ff6b81;">[개회/준비]</span>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; align-items: flex-start; padding: 16px; border-radius: 12px; background-color: #f8fafc; border-left: 3px solid #cbd5e1;">
+                    <div style="min-width: 110px; font-size: 13px; font-weight: 700; color: #475569;">09:00 - 09:30</div>
+                    <div>
+                        <div style="font-size: 15px; font-weight: 700; color: #0f172a;">선수단 입장 및 개회식</div>
+                        <div style="font-size: 13px; color: #64748b; margin-top: 2px;">지정 위치 집결, 개회사 및 안전 수칙 안내</div>
                     </div>
-                    <div style="font-size: 16px; font-weight: 800; color: #2c3e50; margin-bottom: 4px;">🚩 선수단 입장 및 개회식</div>
-                    <div style="font-size: 13px; color: #666666;">학급/팀별 지정 위치 집결, 선수 대표 선서 및 개회사, 체육대회 주의사항 안내</div>
                 </div>
 
-                <div style="background-color: #fff9fa; border-radius: 20px; padding: 16px 20px; border: 1.5px solid #ffe3e8;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-                        <span style="background-color: #ff85a1; color: #ffffff; font-weight: bold; padding: 5px 14px; border-radius: 14px; font-size: 13px;">09:30 - 10:00</span>
-                        <span style="font-size: 13px; font-weight: bold; color: #ff6b81;">[준비운동]</span>
+                <div style="display: flex; align-items: flex-start; padding: 16px; border-radius: 12px; background-color: #f8fafc; border-left: 3px solid #cbd5e1;">
+                    <div style="min-width: 110px; font-size: 13px; font-weight: 700; color: #475569;">09:30 - 10:00</div>
+                    <div>
+                        <div style="font-size: 15px; font-weight: 700; color: #0f172a;">몸풀기 체조 및 응원전</div>
+                        <div style="font-size: 13px; color: #64748b; margin-top: 2px;">부상 방지 스트레칭, 팀별 응원 구호 시연</div>
                     </div>
-                    <div style="font-size: 16px; font-weight: 800; color: #2c3e50; margin-bottom: 4px;">🎵 신나는 몸풀기 체조 & 팀별 응원전</div>
-                    <div style="font-size: 13px; color: #666666;">부상 예방을 위한 스트레칭, 팀별 응원가 및 독창적인 응원 구호 시연</div>
                 </div>
 
-                <div style="background-color: #fff9fa; border-radius: 20px; padding: 16px 20px; border: 1.5px solid #ffe3e8;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-                        <span style="background-color: #
+                <div style="display: flex; align-items: flex-start; padding: 16px; border-radius: 12px; background-color: #f8fafc; border-left: 3px solid #2563eb;">
+                    <div style="min-width: 110px; font-size: 13px; font-weight: 700; color: #2563eb;">10:00 - 12:00</div>
+                    <div>
+                        <div style="font-size: 15px; font-weight: 700; color: #0f172a;">오전 단체 경기</div>
+                        <div style="font-size: 13px; color: #64748b; margin-top: 2px;">단체 줄다리기, 지구를 이어라, 전략 피구</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: flex-start; padding: 16px; border-radius: 12px; background-color: #fefce8; border-left: 3px solid #eab308;">
+                    <div style="min-width: 110px; font-size: 13px; font-weight: 700; color: #ca8a04;">12:00 - 13:30</div>
+                    <div>
+                        <div style="font-size: 15px; font-weight: 700; color: #854d0e;">점심식사 및 휴식</div>
+                        <div style="font-size: 13px; color: #a16207; margin-top: 2px;">지정 장소 식사, 자유 휴식 및 수분 보충</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: flex-start; padding: 16px; border-radius: 12px; background-color: #f8fafc; border-left: 3px solid #2563eb;">
+                    <div style="min-width: 110px; font-size: 13px; font-weight: 700; color: #2563eb;">13:30 - 15:30</div>
+                    <div>
+                        <div style="font-size: 15px; font-weight: 700; color: #0f172a;">오후 경기 및 릴레이</div>
+                        <div style="font-size: 13px; color: #64748b; margin-top: 2px;">구공탄 계주, 파도 타기, 팀 대표 릴레이</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: flex-start; padding: 16px; border-radius: 12px; background-color: #f8fafc; border-left: 3px solid #cbd5e1;">
+                    <div style="min-width: 110px; font-size: 13px; font-weight: 700; color: #475569;">15:30 - 16:30</div>
+                    <div>
+                        <div style="font-size: 15px; font-weight: 700; color: #0f172a;">시상식 및 폐회식</div>
+                        <div style="font-size: 13px; color: #64748b; margin-top: 2px;">종합 성적 발표, 우수팀 시상, 경품 추첨 및 폐회</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3️⃣ [탭 3] 경기 설명 -->
+        <section id="tab-rules" class="tab-content" style="display: none; background-color: #ffffff; border-radius: 20px; padding: 32px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <div style="margin-bottom: 24px;">
+                <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 6px 0; letter-spacing: -0.5px;">경기 규칙 안내</h2>
+                <p style="font-size: 14px; color: #64748b; margin: 0;">주요 종목별 세부 방식입니다.</p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="padding: 20px; border-radius: 14px; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 6px;">1. 단체 줄다리기</div>
+                    <div style="font-size: 14px; color: #475569; line-height: 1.6;">
+                        팀당 20명(남녀 각 10명)이 참가합니다. 신호음과 함께 정해진 시간 내에 중앙선을 자기 진영으로 가장 많이 끌어오는 팀이 승리합니다.
+                    </div>
+                </div>
+
+                <div style="padding: 20px; border-radius: 14px; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 6px;">2. 지구를 이어라</div>
+                    <div style="font-size: 14px; color: #475569; line-height: 1.6;">
+                        대형 애드벌룬 공을 머리 위로 연속 전달합니다. 공이 떨어지지 않고 가장 빠르게 반환점을 돌아오는 팀에 가산점이 부여됩니다.
+                    </div>
+                </div>
+
+                <div style="padding: 20px; border-radius: 14px; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 6px;">3. 대표 총력 릴레이</div>
+                    <div style="font-size: 14px; color: #475569; line-height: 1.6;">
+                        팀별 대표 주자 4명이 200m 트랙을 달립니다. 정확한 터치 존 안에서 바통을 전달해야 하며 드롭 시 정해진 위치에서 다시 출발해야 합니다.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4️⃣ [탭 4] 유의 사항 -->
+        <section id="tab-notice" class="tab-content" style="display: none; background-color: #ffffff; border-radius: 20px; padding: 32px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <div style="margin-bottom: 24px;">
+                <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 6px 0; letter-spacing: -0.5px;">안전 및 수칙</h2>
+                <p style="font-size: 14px; color: #64748b; margin: 0;">원활한 행사 진행을 위한 필수 안내입니다.</p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; gap: 16px; align-items: flex-start;">
+                    <div style="background-color: #eff6ff; color: #2563eb; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">1</div>
+                    <div>
+                        <div style="font-size: 15px; font-weight: 700; color: #0f172a;">안전사고 예방</div>
+                        <div style="font-size: 14px; color: #64748b; margin-top: 2px;">경기 전 준비운동을 필수적으로 진행하며, 이상 발생 시 즉시 본부석 의무팀을 찾아주세요.</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 16px; align-items: flex-start;">
+                    <div style="background-color: #eff6ff; color: #2563eb; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">2</div>
+                    <div>
+                        <div style="font-size: 15px; font-weight: 700; color: #0f172a;">경기 시간 준수</div>
+                        <div style="font-size: 14px; color: #64748b; margin-top: 2px;">각 경기는 정시 시작 10분 전 지정 구역 집결을 원칙으로 합니다.</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 16px; align-items: flex-start;">
+                    <div style="background-color: #eff6ff; color: #2563eb; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">3</div>
+                    <div>
+                        <div style="font-size: 15px; font-weight: 700; color: #0f172a;">환경 정리</div>
+                        <div style="font-size: 14px; color: #64748b; margin-top: 2px;">발생한 쓰레기는 학급 및 팀별 지정된 분리수거 구역에 정돈해 주시기 바랍니다.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 🌟 푸터 🌟 -->
+    <footer style="text-align: center; padding: 40px 20px; border-top: 1px solid #e2e8f0; margin-top: 40px;">
+        <p style="font-size: 13px; color: #94a3b8; margin: 0;">© 2026 한가람 체육활동 운영위원회. All rights reserved.</p>
+    </footer>
+
+    <!-- 💡 탭 컨트롤러 💡 -->
+    <script>
+        function openTab(tabId, btnId) {
+            var contents = document.getElementsByClassName("tab-content");
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].style.display = "none";
+            }
+
+            var buttons = document.querySelectorAll("nav button");
+            buttons.forEach(function(btn) {
+                btn.style.backgroundColor = "transparent";
+                btn.style.color = "#64748b";
+                btn.style.boxShadow = "none";
+            });
+
+            document.getElementById(tabId).style.display = "block";
+            var activeBtn = document.getElementById(btnId);
+            activeBtn.style.backgroundColor = "#ffffff";
+            activeBtn.style.color = "#0f172a";
+            activeBtn.style.boxShadow = "0 1px 3px rgba(0,0,0,0.1)";
+        }
+    </script>
+
+</body>
+</html>
