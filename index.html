@@ -74,9 +74,9 @@
             letter-spacing: -0.5px;
         }
 
-        /* ☁️ 메인 레이아웃 ☁️ */
+        /* ☁️ 메인 레이아웃 (좌우 공간을 활용하도록 너비 확장) ☁️ */
         main {
-            max-width: 800px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 30px 20px;
         }
@@ -134,13 +134,21 @@
             gap: 8px;
         }
 
-        /* ☁️ 대진표 디자인 ☁️ */
+        /* ☁️ 대진표 3열 반응형 그리드 레이아웃 ☁️ */
+        .bracket-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
         .grade-bracket-box {
             background-color: #f0f9ff;
             border-radius: 24px;
             padding: 20px;
-            margin-bottom: 22px;
             border: 2px dashed #bae6fd;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .grade-tag {
@@ -152,6 +160,7 @@
             border-radius: 15px;
             font-size: 14px;
             margin-bottom: 14px;
+            align-self: flex-start;
         }
 
         .match-row {
@@ -159,51 +168,53 @@
             align-items: center;
             justify-content: space-between;
             background-color: #ffffff;
-            padding: 12px 18px;
-            border-radius: 18px;
-            margin-bottom: 10px;
+            padding: 10px 14px;
+            border-radius: 16px;
+            margin-bottom: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
             border: 1px solid #e0f2fe;
             font-weight: 700;
+            font-size: 13px;
         }
 
         .team-box {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
         }
 
         .team-name {
             color: #0c4a6e;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .vs-badge {
             background-color: #ffedd5;
             color: #f97316;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 900;
-            padding: 3px 8px;
-            border-radius: 10px;
+            padding: 2px 6px;
+            border-radius: 8px;
         }
 
         .pass-badge {
             background-color: #fef08a;
             color: #ca8a04;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 12px;
+            padding: 3px 8px;
+            border-radius: 10px;
         }
 
         .next-round {
             background-color: #fef3c7;
             border: 2px solid #fde68a;
-            padding: 14px 18px;
-            border-radius: 20px;
-            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 16px;
+            margin-top: 10px;
             text-align: center;
             font-weight: 800;
+            font-size: 13px;
             color: #b45309;
         }
 
@@ -211,13 +222,13 @@
             display: inline-block;
             background-color: #ffffff;
             color: #f59e0b;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
-            line-height: 28px;
+            line-height: 24px;
             text-align: center;
-            font-size: 15px;
-            margin: 0 4px;
+            font-size: 13px;
+            margin: 0 2px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
@@ -240,7 +251,7 @@
 
         <!-- ⏰ D-Day 카운트다운 영역 ⏰ -->
         <div class="dday-container">
-            <span id="dday-display" class="dday-text">🎈 D-Day 계산 중...</span>
+            <span id="dday-display" class="dday-text">🎈 체육대회까지 D-4</span>
         </div>
     </header>
 
@@ -259,7 +270,7 @@
         <!-- 1️⃣ [탭 1] 행사 안내 -->
         <section id="tab-info" class="tab-content active">
             <h2 class="section-title">☁️ 행사 개요</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
                 <div style="background-color: #f0f9ff; padding: 18px; border-radius: 20px; border: 1.5px solid #bae6fd;">
                     <div style="color: #0284c7; font-size: 13px; font-weight: 800; margin-bottom: 4px;">📅 행사 일시</div>
                     <div style="font-size: 16px; font-weight: 800; color: #0c4a6e;">2026년 10월 16일 (금)</div>
@@ -283,141 +294,149 @@
             </div>
         </section>
 
-        <!-- 2️⃣ [탭 2] 줄다리기 대진표 -->
+        <!-- 2️⃣ [탭 2] 줄다리기 대진표 (3열 가로 배치 그리드!) -->
         <section id="tab-bracket" class="tab-content">
             <h2 class="section-title">🪢 학년별 줄다리기 예선 대진표</h2>
             <p style="font-size: 13px; color: #64748b; margin-bottom: 18px;">* 각 경기에서 이긴 반이 결승전(다음 라운드)으로 진출합니다!</p>
 
-            <!-- 🥇 1학년 대진표 -->
-            <div class="grade-bracket-box">
-                <span class="grade-tag">☁️ 1학년 예선 대진</span>
-                
-                <div class="match-row">
-                    <span style="color: #0284c7;">1경기</span>
-                    <div class="team-box">
-                        <span class="team-name">1반</span>
-                        <span class="vs-badge">VS</span>
-                        <span class="team-name">7반</span>
+            <div class="bracket-grid">
+                <!-- 🥇 1학년 대진표 -->
+                <div class="grade-bracket-box">
+                    <div>
+                        <span class="grade-tag">☁️ 1학년 예선 대진</span>
+                        
+                        <div class="match-row">
+                            <span style="color: #0284c7;">1경기</span>
+                            <div class="team-box">
+                                <span class="team-name">1반</span>
+                                <span class="vs-badge">VS</span>
+                                <span class="team-name">7반</span>
+                            </div>
+                        </div>
+
+                        <div class="match-row">
+                            <span style="color: #0284c7;">2경기</span>
+                            <div class="team-box">
+                                <span class="team-name">2반</span>
+                                <span class="vs-badge">VS</span>
+                                <span class="team-name">3반</span>
+                            </div>
+                        </div>
+
+                        <div class="match-row">
+                            <span style="color: #0284c7;">3경기</span>
+                            <div class="team-box">
+                                <span class="team-name">4반</span>
+                                <span class="vs-badge">VS</span>
+                                <span class="team-name">6반</span>
+                            </div>
+                        </div>
+
+                        <div class="match-row" style="background-color: #fefce8; border-color: #fef08a;">
+                            <span style="color: #ca8a04;">부전승</span>
+                            <div class="team-box">
+                                <span class="team-name" style="font-weight: 800;">5반</span>
+                                <span class="pass-badge">예선 통과!</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="next-round">
+                        🏆 결승: <span class="q-mark">?</span> vs <span class="q-mark">?</span> vs <span class="q-mark">?</span> vs <span class="team-name" style="font-weight: 800;">5반</span>
                     </div>
                 </div>
 
-                <div class="match-row">
-                    <span style="color: #0284c7;">2경기</span>
-                    <div class="team-box">
-                        <span class="team-name">2반</span>
-                        <span class="vs-badge">VS</span>
-                        <span class="team-name">3반</span>
+                <!-- 🥈 2학년 대진표 -->
+                <div class="grade-bracket-box">
+                    <div>
+                        <span class="grade-tag">☁️ 2학년 예선 대진</span>
+
+                        <div class="match-row">
+                            <span style="color: #0284c7;">1경기</span>
+                            <div class="team-box">
+                                <span class="team-name">1반</span>
+                                <span class="vs-badge">VS</span>
+                                <span class="team-name">7반</span>
+                            </div>
+                        </div>
+
+                        <div class="match-row">
+                            <span style="color: #0284c7;">2경기</span>
+                            <div class="team-box">
+                                <span class="team-name">3반</span>
+                                <span class="vs-badge">VS</span>
+                                <span class="team-name">4반</span>
+                            </div>
+                        </div>
+
+                        <div class="match-row">
+                            <span style="color: #0284c7;">3경기</span>
+                            <div class="team-box">
+                                <span class="team-name">6반</span>
+                                <span class="vs-badge">VS</span>
+                                <span class="team-name">2반</span>
+                            </div>
+                        </div>
+
+                        <div class="match-row">
+                            <span style="color: #0284c7;">4경기</span>
+                            <div class="team-box">
+                                <span class="team-name">5반</span>
+                                <span class="vs-badge">VS</span>
+                                <span class="team-name">8반</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="next-round">
+                        🏆 결승: 승자 4팀 (<span class="q-mark">?</span> <span class="q-mark">?</span> <span class="q-mark">?</span> <span class="q-mark">?</span>)
                     </div>
                 </div>
 
-                <div class="match-row">
-                    <span style="color: #0284c7;">3경기</span>
-                    <div class="team-box">
-                        <span class="team-name">4반</span>
-                        <span class="vs-badge">VS</span>
-                        <span class="team-name">6반</span>
+                <!-- 🥉 3학년 대진표 -->
+                <div class="grade-bracket-box">
+                    <div>
+                        <span class="grade-tag">☁️ 3학년 예선 대진</span>
+
+                        <div class="match-row">
+                            <span style="color: #0284c7;">1경기</span>
+                            <div class="team-box">
+                                <span class="team-name">2반</span>
+                                <span class="vs-badge">VS</span>
+                                <span class="team-name">3반</span>
+                            </div>
+                        </div>
+
+                        <div class="match-row">
+                            <span style="color: #0284c7;">2경기</span>
+                            <div class="team-box">
+                                <span class="team-name">6반</span>
+                                <span class="vs-badge">VS</span>
+                                <span class="team-name">7반</span>
+                            </div>
+                        </div>
+
+                        <div class="match-row">
+                            <span style="color: #0284c7;">3경기</span>
+                            <div class="team-box">
+                                <span class="team-name">1반</span>
+                                <span class="vs-badge">VS</span>
+                                <span class="team-name">4반</span>
+                            </div>
+                        </div>
+
+                        <div class="match-row" style="background-color: #fefce8; border-color: #fef08a;">
+                            <span style="color: #ca8a04;">부전승</span>
+                            <div class="team-box">
+                                <span class="team-name" style="font-weight: 800;">5반</span>
+                                <span class="pass-badge">예선 통과!</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="match-row" style="background-color: #fefce8; border-color: #fef08a;">
-                    <span style="color: #ca8a04;">부전승</span>
-                    <div class="team-box">
-                        <span class="team-name" style="font-weight: 800;">5반</span>
-                        <span class="pass-badge">✨ 바로 예선 통과!</span>
+                    <div class="next-round">
+                        🏆 결승: <span class="q-mark">?</span> vs <span class="q-mark">?</span> vs <span class="q-mark">?</span> vs <span class="team-name" style="font-weight: 800;">5반</span>
                     </div>
-                </div>
-
-                <div class="next-round">
-                    🏆 결승 진출 대기: <span class="q-mark">?</span> vs <span class="q-mark">?</span> vs <span class="q-mark">?</span> vs <span class="team-name" style="font-weight: 800;">5반</span>
-                </div>
-            </div>
-
-            <!-- 🥈 2학년 대진표 -->
-            <div class="grade-bracket-box">
-                <span class="grade-tag">☁️ 2학년 예선 대진</span>
-
-                <div class="match-row">
-                    <span style="color: #0284c7;">1경기</span>
-                    <div class="team-box">
-                        <span class="team-name">1반</span>
-                        <span class="vs-badge">VS</span>
-                        <span class="team-name">7반</span>
-                    </div>
-                </div>
-
-                <div class="match-row">
-                    <span style="color: #0284c7;">2경기</span>
-                    <div class="team-box">
-                        <span class="team-name">3반</span>
-                        <span class="vs-badge">VS</span>
-                        <span class="team-name">4반</span>
-                    </div>
-                </div>
-
-                <div class="match-row">
-                    <span style="color: #0284c7;">3경기</span>
-                    <div class="team-box">
-                        <span class="team-name">6반</span>
-                        <span class="vs-badge">VS</span>
-                        <span class="team-name">2반</span>
-                    </div>
-                </div>
-
-                <div class="match-row">
-                    <span style="color: #0284c7;">4경기</span>
-                    <div class="team-box">
-                        <span class="team-name">5반</span>
-                        <span class="vs-badge">VS</span>
-                        <span class="team-name">8반</span>
-                    </div>
-                </div>
-
-                <div class="next-round">
-                    🏆 결승 진출 대기: 각 경기 승자 (<span class="q-mark">?</span> <span class="q-mark">?</span> <span class="q-mark">?</span> <span class="q-mark">?</span>)
-                </div>
-            </div>
-
-            <!-- 🥉 3학년 대진표 -->
-            <div class="grade-bracket-box">
-                <span class="grade-tag">☁️ 3학년 예선 대진</span>
-
-                <div class="match-row">
-                    <span style="color: #0284c7;">1경기</span>
-                    <div class="team-box">
-                        <span class="team-name">2반</span>
-                        <span class="vs-badge">VS</span>
-                        <span class="team-name">3반</span>
-                    </div>
-                </div>
-
-                <div class="match-row">
-                    <span style="color: #0284c7;">2경기</span>
-                    <div class="team-box">
-                        <span class="team-name">6반</span>
-                        <span class="vs-badge">VS</span>
-                        <span class="team-name">7반</span>
-                    </div>
-                </div>
-
-                <div class="match-row">
-                    <span style="color: #0284c7;">3경기</span>
-                    <div class="team-box">
-                        <span class="team-name">1반</span>
-                        <span class="vs-badge">VS</span>
-                        <span class="team-name">4반</span>
-                    </div>
-                </div>
-
-                <div class="match-row" style="background-color: #fefce8; border-color: #fef08a;">
-                    <span style="color: #ca8a04;">부전승</span>
-                    <div class="team-box">
-                        <span class="team-name" style="font-weight: 800;">5반</span>
-                        <span class="pass-badge">✨ 바로 예선 통과!</span>
-                    </div>
-                </div>
-
-                <div class="next-round">
-                    🏆 결승 진출 대기: <span class="q-mark">?</span> vs <span class="q-mark">?</span> vs <span class="q-mark">?</span> vs <span class="team-name" style="font-weight: 800;">5반</span>
                 </div>
             </div>
         </section>
@@ -447,74 +466,4 @@
                     <div style="font-size: 15px; font-weight: 800; color: #0c4a6e;">줄다리기 결승전 & 릴레이 계주</div>
                 </div>
                 <div style="padding: 14px 18px; background-color: #f0f9ff; border-radius: 18px; border-left: 4px solid #38bdf8;">
-                    <strong style="color: #0284c7; font-size: 13px;">15:30 - 16:30</strong>
-                    <div style="font-size: 15px; font-weight: 800; color: #0c4a6e;">시상식 및 폐회식</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4️⃣ [탭 4] 경기 설명 -->
-        <section id="tab-rules" class="tab-content">
-            <h2 class="section-title">🎯 줄다리기 경기 규칙</h2>
-            <div style="background-color: #f0f9ff; padding: 20px; border-radius: 20px; border: 1.5px solid #bae6fd;">
-                <h3 style="color: #0284c7; font-size: 16px; margin-bottom: 8px;">🪢 학년별 줄다리기 진행 규칙</h3>
-                <p style="font-size: 14px; color: #475569; line-height: 1.7;">
-                    1. 각 반 인원이 참여하며 신호에 맞춰 중앙선을 자기 진영으로 당깁니다.<br>
-                    2. 예선전에서 승리한 반은 결승전 진출권(? 위치)을 얻게 됩니다.<br>
-                    3. 부전승 반(1학년 5반, 3학년 5반)은 경기 없이 자동으로 결승에 직행합니다.
-                </p>
-            </div>
-        </section>
-
-        <!-- 5️⃣ [탭 5] 유의 사항 -->
-        <section id="tab-notice" class="tab-content">
-            <h2 class="section-title">💡 안전 수칙 및 유의사항</h2>
-            <ul style="padding-left: 20px; color: #475569; font-size: 14px; line-height: 1.8;">
-                <li>줄다리기 진행 시 손 미끄럼 방지를 위해 수건을 준비해 주세요.</li>
-                <li>경기 전 준비운동을 필수 실시하여 부상을 예방합니다.</li>
-                <li>이상 발생 시 즉시 본부석 <b>의무팀</b>을 방문해 주세요.</li>
-            </ul>
-        </section>
-
-    </main>
-
-    <!-- ☁️ 푸터 ☁️ -->
-    <footer>
-        <p>© 2026 한가람 체육활동 운영위원회. All rights reserved.</p>
-    </footer>
-
-    <!-- 💡 자바스크립트 스크립트 (탭 전환 및 D-Day 자동 계산) 💡 -->
-    <script>
-        // 1. 탭 전환 기능
-        function changeTab(evt, tabId) {
-            var contents = document.getElementsByClassName("tab-content");
-            for (var i = 0; i < contents.length; i++) {
-                contents[i].classList.remove("active");
-            }
-
-            var buttons = document.getElementsByClassName("tab-button");
-            for (var j = 0; j < buttons.length; j++) {
-                buttons[j].classList.remove("active");
-            }
-
-            document.getElementById(tabId).classList.add("active");
-            evt.currentTarget.classList.add("active");
-        }
-
-        // 2. D-Day 자동 계산 기능 (매일 자동 차감)
-        function calculateDday() {
-            // 체육대회 날짜 (2026년 10월 16일)
-            var targetDate = new Date(2026, 9, 16); // 월은 0부터 시작하므로 9 = 10월
-            
-            // 오늘 날짜 (시간을 00:00:00으로 맞춰 날짜 단위만 정확히 계산)
-            var today = new Date();
-            var todayZero = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
-            // 날짜 차이 계산 (밀리초 기준)
-            var diffTime = targetDate - todayZero;
-            var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-            var displayElement = document.getElementById("dday-display");
-
-            if (diffDays > 0) {
-                displayElement.innerText = "🎈 체육대회까지 D
+                    <strong style="color: #0284c7; font-
