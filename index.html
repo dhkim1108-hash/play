@@ -25,7 +25,7 @@
         /* ☁️ 상단 헤더 ☁️ */
         header {
             background: #ffffff;
-            padding: 45px 20px 35px;
+            padding: 40px 20px 30px;
             text-align: center;
             border-bottom-left-radius: 40px;
             border-bottom-right-radius: 40px;
@@ -54,6 +54,24 @@
             color: #38bdf8;
             font-weight: 700;
             font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        /* ☁️ D-Day 전용 구름 카드 ☁️ */
+        .dday-container {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffedd5 0%, #fef3c7 100%);
+            border: 2px dashed #fde68a;
+            padding: 10px 24px;
+            border-radius: 25px;
+            box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
+        }
+
+        .dday-text {
+            font-size: 20px;
+            font-weight: 900;
+            color: #ea580c;
+            letter-spacing: -0.5px;
         }
 
         /* ☁️ 메인 레이아웃 ☁️ */
@@ -219,6 +237,11 @@
         <span class="header-badge">☁️ 2026 한가람 체육활동 ☁️</span>
         <h1>🏃‍♂️ 신나는 한마음 체육대회 🏃‍♀️</h1>
         <p>몽실몽실 구름처럼 함께 즐기는 축제!</p>
+
+        <!-- ⏰ D-Day 카운트다운 영역 ⏰ -->
+        <div class="dday-container">
+            <span id="dday-display" class="dday-text">🎈 D-Day 계산 중...</span>
+        </div>
     </header>
 
     <!-- ☁️ 메인 컨테이너 ☁️ -->
@@ -239,7 +262,7 @@
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
                 <div style="background-color: #f0f9ff; padding: 18px; border-radius: 20px; border: 1.5px solid #bae6fd;">
                     <div style="color: #0284c7; font-size: 13px; font-weight: 800; margin-bottom: 4px;">📅 행사 일시</div>
-                    <div style="font-size: 16px; font-weight: 800; color: #0c4a6e;">2026년 9월 28일 (월)[cite: 1]</div>
+                    <div style="font-size: 16px; font-weight: 800; color: #0c4a6e;">2026년 10월 16일 (금)</div>
                     <div style="font-size: 13px; color: #64748b;">09:00 - 16:30</div>
                 </div>
                 <div style="background-color: #f0f9ff; padding: 18px; border-radius: 20px; border: 1.5px solid #bae6fd;">
@@ -460,26 +483,38 @@
         <p>© 2026 한가람 체육활동 운영위원회. All rights reserved.</p>
     </footer>
 
-    <!-- 💡 클릭 문제 해결 자바스크립트 💡 -->
+    <!-- 💡 자바스크립트 스크립트 (탭 전환 및 D-Day 자동 계산) 💡 -->
     <script>
+        // 1. 탭 전환 기능
         function changeTab(evt, tabId) {
-            // 1. 모든 탭 숨기기
             var contents = document.getElementsByClassName("tab-content");
             for (var i = 0; i < contents.length; i++) {
                 contents[i].classList.remove("active");
             }
 
-            // 2. 모든 버튼 비활성화
             var buttons = document.getElementsByClassName("tab-button");
             for (var j = 0; j < buttons.length; j++) {
                 buttons[j].classList.remove("active");
             }
 
-            // 3. 선택한 탭 및 버튼만 활성화
             document.getElementById(tabId).classList.add("active");
             evt.currentTarget.classList.add("active");
         }
-    </script>
 
-</body>
-</html>
+        // 2. D-Day 자동 계산 기능 (매일 자동 차감)
+        function calculateDday() {
+            // 체육대회 날짜 (2026년 10월 16일)
+            var targetDate = new Date(2026, 9, 16); // 월은 0부터 시작하므로 9 = 10월
+            
+            // 오늘 날짜 (시간을 00:00:00으로 맞춰 날짜 단위만 정확히 계산)
+            var today = new Date();
+            var todayZero = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+            // 날짜 차이 계산 (밀리초 기준)
+            var diffTime = targetDate - todayZero;
+            var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            var displayElement = document.getElementById("dday-display");
+
+            if (diffDays > 0) {
+                displayElement.innerText = "🎈 체육대회까지 D
