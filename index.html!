@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D 햄스터 다마고치 월드</title>
+    <style>
+        :root {
+            --bg-color: #f0f4f8;
+            --main-dark: #f6416c;
+            --room-bg: linear-gradient(135deg, #e0f2fe, #bae6fd);
+            --floor-bg: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: #1e293b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            perspective: 1000px; /* 3D 효과를 위한 원근감 설정 */
+        }
+
+        #game-container {
+            width: 450px;
+            height: 780px;
+            background-color: var(--bg-color);
+            border: 8px solid #334155;
+            border-radius: 35px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* 1. 시작 화면 */
+        #start-screen {
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, #ffecd2 0%, #fcb69f 100%);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #c2410c;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 0px #fff;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #ea580c;
+        }
+
+        .input-group input {
+            width: 80%;
+            padding: 12px;
+            border: 3px solid #ea580c;
+            border-radius: 15px;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+        }
+
+        .type-selector {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 35px;
+        }
+
+        .type-card {
+            background: white;
+            border: 3px solid #cbd5e1;
+            border-radius: 15px;
+            padding: 10px;
+            width: 28%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .type-card.selected {
+            border-color: var(--main-dark);
+            background-color: #fff0f2;
+            transform: scale(1.05);
+        }
+
+        .type-card .emoji {
+            font-size: 40px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .type-card .name {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .btn {
+            background-color: var(--main-dark);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 5px 0px #b81d40;
+        }
+
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0px #b81d40;
+        }
+
+        /* 2. 메인 화면 */
+        #main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            z-index: 5;
+        }
+
+        #hamster-info { font-weight: bold; }
+        #gold-display { font-weight: bold; color: #d97706; font-size: 18px; }
+
+        #status-bars {
+            margin-top: 12px;
+            background: rgba(255,255,255,0.8);
+            padding: 12px;
+            border-radius: 15px;
+            z-index: 5;
+        }
+
+        .stat-row { display: flex; align-items: center; margin-bottom: 6px; }
+        .stat-row:last-child { margin-bottom: 0; }
+        .stat-label { width: 65px; font-size: 12px; font-weight: bold; }
+        .bar-container { flex-grow: 1; height: 12px; background-color: #cbd5e1; border-radius: 6px; overflow: hidden; }
+        .bar { height: 100%; width: 100%; transition: width 0.3s; }
+        #hunger-bar { background-color: #10b981; }
+        #happy-bar { background-color: #3b82f6; }
+        #condition-text { font-size: 12px; font-weight: bold; text-align: right; color: #ef4444; width: 100%; margin-top: 2px; }
+
+        /* 🪐 3D 그래픽 룸 환경 레이아웃 */
+        #room-viewport {
+            flex-grow: 1;
+            margin: 15px 0;
+            overflow: hidden;
+            border-radius: 20px;
+            background: #0f172a;
+            perspective: 800px; /* 깊이 원근감 */
+        }
+
+        #room-3d-scene {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(12deg) rotateY(0deg);
+            transition: transform 0.1s ease-out;
+        }
+
+        /* 3D 벽면과 바닥 */
+        #room-back-wall {
+            position: absolute;
+            width: 100%;
+            height: 85%;
+            background: var(--room-bg);
+            transform: translateZ(-100px);
+            border-bottom: 4px solid #94a3b8;
+        }
+
+        #room-floor {
+            position: absolute;
+            width: 100%;
+            height: 250px;
+            bottom: -50px;
+            background: var(--floor-bg);
+            transform: rotateX(80deg);
+            transform-origin: bottom center;
+            box-shadow: inset 0 50px 100px rgba(0,0,0,0.1);
+        }
+
+        /* 3D 가구 및 오브젝트 배치 */
+        #wheel-object {
+            position: absolute;
+            bottom: 110px;
+            right: 40px;
+            font-size: 90px;
+            width: 100px;
+            height: 100px;
+            transform: translateZ(-20px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            filter: drop-shadow(0 15px 10px rgba(0,0,0,0.15));
+        }
+
+        .spinning { animation: spin 0.8s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(-360deg); } }
+
+        #house-object {
+            position: absolute;
+            bottom: 120px;
+            left: 30px;
+            font-size: 75px;
+            transform: translateZ(-40px);
+            filter: drop-shadow(0 10px 8px rgba(0,0,0,0.15));
+        }
+
+        /* 🐹 3D 캐릭터 래퍼 */
+        #hamster-character {
+            position: absolute;
+            bottom: 90px;
+            left: 160px;
+            width: 90px;
+            height: 90px;
+            transform-style: preserve-3d;
+            transform: translateZ(20px);
+            transition: left 0.6s ease-out;
+            cursor: pointer;
+        }
+
+        #hamster-body-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #hamster-body { font-size: 70px; z-index: 2; transition: transform 0.2s; }
+        #hamster-hat { position: absolute; top: -10px; font-size: 35px; z-index: 4; width: 100%; text-align: center; pointer-events: none; }
+        
+        /* 말풍선 */
+        #speech-bubble {
+            position: absolute;
+            top: -55px;
+            left: 50%;
+            transform: translateX(-50%) translateZ(30px);
+            background: white;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            border: 2px solid #333;
+            display: none;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        /* 하트 이펙트 효과 */
+        .heart-effect {
+            position: absolute;
+            color: #ff4d6d;
+            font-size: 24px;
+            animation: floatUp 1s ease-out forwards;
+            pointer-events: none;
+            z-index: 100;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-60px) scale(1.3); opacity: 0; }
+        }
+
+        /* 하단 메뉴 바 */
+        #footer-menu { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+        .menu-btn {
+            background: white;
+            border: 2px solid #cbd5e1;
+            padding: 10px 0;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            font-size: 11px;
+        }
+        .menu-btn .icon { font-size: 20px; }
+        .menu-btn:active { background-color: #f1f5f9; }
+        .menu-btn.pulse { animation: alertPulse 1.5s infinite; background: #fee2e2; border-color: #ef4444; }
+        @keyframes alertPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+
+        /* 3. 모달/팝업 공통 스타일 */
+        .modal {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            z-index: 100;
+            justify-content: flex-end;
+            flex-direction: column;
+        }
+
+        .modal-content {
+            background: white;
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
+            height: 65%;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+코드를 사용할 때는 주의가 필요합니다.
+}
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; }
+.modal-title { font-size: 18px; font-weight: bold; display: flex; align-items: center; gap: 6px; }
+.close-btn { font-size: 22px; cursor: pointer; background: none; border: none; color: #64748b; }
+.shop-tabs { display: flex; gap: 5px; margin-bottom: 12px; }
+.tab-btn { flex: 1; padding: 8px; border: 2px solid #e2e8f0; background: #f8fafc; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 13px; }
+.tab-btn.active { background: #f6416c; color: white; border-color: #f6416c; }
+.item-list { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+.item-card { display: flex; align-items: center; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 15px; padding: 10px; justify-content: space-between; }
+.item-info { display: flex; align-items: center; gap: 12px; }
+.item-icon { font-size: 30px; background: white; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 12px; border: 1px solid #cbd5e1; }
+.item-details .item-name { font-weight: bold; font-size: 14px; }
+.item-details .item-desc { font-size: 11px; color: #64748b; margin-top: 1px; }
+.buy-action { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.price-tag { font-size: 13px; font-weight: bold; color: #b45309; }
+.item-btn { padding: 6px 14px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; background-color: #3b82f6; color: white; font-size: 12px; }
+.item-btn.owned { background-color: #10b981; }
+.item-btn.equipped { background-color: #ef4444; }
+/* 4. 미니게임 화면 */
+#game-screen { background-color: #bae6fd; padding: 0; position: relative; }
+#game-canvas { width: 100%; height: 100%; display: block; }
+#game-ui { position: absolute; top: 20px; left: 0; width: 100%; display: flex; justify-content: space-between; padding: 0 20px; pointer-events: none; }
+.ui-box { background: rgba(255,255,255,0.9); padding: 6px 12px; border-radius: 10px; font-weight: bold; font-size: 14px; border: 2px solid #1e293b; }
+
+
+🐹 3D 햄스터 다마고치 월드
+햄스터의 이름을 지어주세요!
+종류 선택
+🐹
+정글리안
+
+
+🐹
+골든햄스터
+
+
+🐭
+사슴햄스터
+
+분양 입장하기
+🐹 햄스터
+🪙 0
+🍔 포만감
+
+
+
+❤️ 행복도
+
+
+건강 상태: 최고 😊
+🎡
+📦
+꾸익!
+
+
+🐹
+
+
+
+👋
+쓰다듬기
+
+
+🌻
+먹이주기
+
+
+🛍️
+상점
+
+
+🏥
+동물병원
+
+
+🎮
+게임스폰
+
+
+해바라기씨: 0
+시간: 30초
+
+
+🛍️ 해바라기 3D 타운 마켓
+✕
+
+
+먹거리 코너
+가구/집 강화
+
+
+
+
+// 전역 다마고치 시스템 상태 정의
+const gameState = {
+name: "모찌",
+type: "jungli",
+emoji: "🐹",
+gold: 300,
+hunger: 100,
+happy: 100,
+isSick: false,
+wheelLevel: 1,
+houseLevel: 1,
+ownedHats: [],
+equippedHat: null,
+normalEmoji: "🐹"
+};
+const wheelData = {
+1: { name: "플라스틱 쳇바퀴", emoji: "🎡", gold: 1, style: "" },
+2: { name: "무소음 원목 쳇바퀴", emoji: "🎡", gold: 3, style: "filter: sepia(0.6) saturate(1.6);" },
+3: { name: "에메랄드 러너 쳇바퀴", emoji: "🎡", gold: 8, style: "filter: hue-rotate(130deg) saturate(2.5);" },
+4: { name: "은하수 모터 쳇바퀴", emoji: "🎡", gold: 22, style: "filter: drop-shadow(0 0 8px gold) brightness(1.3);" }
+};
+const houseData = {
+1: { name: "소박한 골판지 상자", emoji: "📦", bg: "linear-gradient(135deg, #e0f2fe, #bae6fd)", floor: "#e2e8f0" },
+2: { name: "아늑한 친환경 우드 하우스", emoji: "🏠", bg: "linear-gradient(135deg, #fef3c7, #fde68a)", floor: "#d97706" },
+3: { name: "럭셔리 2층 통유리 궁전 케이지", emoji: "🏰", bg: "linear-gradient(135deg, #fae8ff, #f5d0fe)", floor: "#a855f7" }
+};
+const foodItems = [
+{ id: "f1", name: "특선 해바라기씨", desc: "포만감 +15", price: 10, hunger: 15, happy: 5, icon: "🌻" },
+{ id: "f2", name: "달콤 가득 딸기 슬라이스", desc: "포만감 +35, 행복 +15", price: 25, hunger: 35, happy: 15, icon: "🍓" },
+{ id: "f3", name: "최고급 통치즈 덩어리", desc: "포만감 +60, 행복 +35", price: 50, hunger: 60, happy: 35, icon: "🧀" }
+];
+const hatItems = [
+{ id: "h1", name: "귀여운 빨간 리본", price: 100, icon: "🎀" },
+{ id: "h2", name: "미니 아기 황금 왕관", price: 300, icon: "👑" },
+{ id: "h3", name: "신사 마술사 실크햇", price: 600, icon: "🎩" }
+];
+let currentShopTab = "food";
+// 모달창 오픈 바인딩 및 버튼 수집
+const startScreen = document.getElementById("start-screen");
+const mainScreen = document.getElementById("main-screen");
+const gameScreen = document.getElementById("game-screen");
+const shopModal = document.getElementById("shop-modal");
+const roomViewport = document.getElementById("room-viewport");
+const room3DScene = document.getElementById("room-3d-scene");
+// 🪐 마우스 움직임에 반응하는 3D 시점 카메라 회전 이펙트 구현
+roomViewport.addEventListener("mousemove", (e) => {
+const rect = roomViewport.getBoundingClientRect();
+const x = e.clientX - rect.left - (rect.width / 2);
+const y = e.clientY - rect.top - (rect.height / 2);
+// 각도 제약 조건 연산 구현
+const rotateX = 12 - (y / rect.height * 20);
+const rotateY = (x / rect.width * 25);
+room3DScene.style.transform = rotateX(${rotateX}deg) rotateY(${rotateY}deg);
+});
+roomViewport.addEventListener("mouseleave", () => {
+room3DScene.style.transform = rotateX(12deg) rotateY(0deg);
+});
+// 🐹 종류 분양 카드 셀렉터
+document.querySelectorAll(".type-card").forEach(card => {
+card.addEventListener("click", () => {
+document.querySelectorAll(".type-card").forEach(c => c.classList.remove("selected"));
+card.classList.add("selected");
+gameState.type = card.dataset.type;
+gameState.emoji = card.dataset.emoji;
+gameState.normalEmoji = card.dataset.emoji;
+});
+});
+// 분양 및 게임 정식 론칭 스타트 트래커
+document.getElementById("start-game-btn").addEventListener("click", () => {
+const nameInput = document.getElementById("hamster-name-input").value.trim();
+if(!nameInput) return alert("이름을 부여해주세요!");
+gameState.name = nameInput;
+document.getElementById("display-name").innerText = gameState.name;
+document.getElementById("display-type").innerText = gameState.emoji;
+document.getElementById("hamster-body").innerText = gameState.emoji;
+if(gameState.type === 'golden') {
+document.getElementById("hamster-body").style.filter = "sepia(0.6) hue-rotate(15deg) saturate(2)";
+}
+startScreen.classList.remove("active");
+mainScreen.classList.add("active");
+startCoreTimers();
+});
+// 다마고치 백그라운드 엔진 스케줄러 루프
+function startCoreTimers() {
+// 1. 주기적인 포만감과 감정 고갈 처리 시스템
+setInterval(() => {
+gameState.hunger = Math.max(0, gameState.hunger - 3);
+gameState.happy = Math.max(0, gameState.happy - 2);
+// 질병 검출 트리거 조건 판정
+if((gameState.hunger <= 10 || gameState.happy <= 10) && !gameState.isSick) {
+gameState.isSick = true;
+showSpeech("콜록콜록.. 아파요 🏥 병원에 데려가주세요..");
+}
+updateMainUI();
+}, 3000);
+// 2. 쳇바퀴 실시간 자동 코인 누적기 시스템
+setInterval(() => {
+if(!gameState.isSick && gameState.hunger > 15 && gameState.happy > 15) {
+gameState.gold += wheelData[gameState.wheelLevel].gold;
+document.getElementById("wheel-object").classList.add("spinning");
+} else {
+document.getElementById("wheel-object").classList.remove("spinning");
+}
+updateMainUI();
+}, 1000);
+// 3. 자율 인공지능 보행 산책 패턴 구현
+setInterval(() => {
+if(!gameState.isSick) {
+const walkX = Math.floor(Math.random() * 200) + 20;
+document.getElementById("hamster-character").style.left = walkX + "px";
+}
+}, 5000);
+}
+// 실시간 UI 드로잉 동기화 갱신
+function updateMainUI() {
+document.getElementById("display-gold").innerText = gameState.gold.toLocaleString();
+document.getElementById("hunger-bar").style.width = gameState.hunger + "%";
+document.getElementById("happy-bar").style.width = gameState.happy + "%";
+const condText = document.getElementById("condition-text");
+const hamBody = document.getElementById("hamster-body");
+const hospBtn = document.getElementById("menu-hospital-btn");
+if(gameState.isSick) {
+condText.innerText = "건강 상태: 매우 아픔! 😷";
+condText.style.color = "#ef4444";
+hamBody.innerText = "😷";
+hospBtn.classList.add("pulse"); // 병원 버튼 반짝임 경고 이펙트 효과 활성화
+} else {
+hospBtn.classList.remove("pulse");
+condText.style.color = "#ef4444";
+if(gameState.hunger > 60 && gameState.happy > 60) {
+condText.innerText = "건강 상태: 최고 😊";
+condText.style.color = "#10b981";
+hamBody.innerText = gameState.normalEmoji;
+} else {
+condText.innerText = "건강 상태: 보통 😐";
+condText.style.color = "#64748b";
+hamBody.innerText = gameState.normalEmoji;
+}
+}
+// 가구 및 집 디자인 동기화
+const w = wheelData[gameState.wheelLevel];
+document.getElementById("wheel-object").innerText = w.emoji;
+document.getElementById("wheel-object").style.cssText += w.style;
+const h = houseData[gameState.houseLevel];
+document.getElementById("house-object").innerText = h.emoji;
+document.documentElement.style.setProperty('--room-bg', h.bg);
+document.documentElement.style.setProperty('--floor-bg', h.floor);
+}
+// 👋 실시간 쓰다듬기 버튼 인터랙션 시스템
+document.getElementById("menu-pet-btn").addEventListener("click", () => {
+if(gameState.isSick) {
+showSpeech("아파서 쓰다듬어도 기운이 안 나요.. 병원 먼저 가요 ㅠ");
+return;
+}
+// 눈 감고 행복해하는 표정 렌더 유도 ( ⁠⁠´⁠꒳⁠`⁠⁠ ) 또는 웃는 아이콘 변형
+const hamBody = document.getElementById("hamster-body");
+hamBody.innerText = "🥰";
+hamBody.style.transform = "scale(1.15)";
+gameState.happy = Math.min(100, gameState.happy + 15);
+// 3D 공간 하트 스폰 팝업 분출
+for(let i=0; i<3; i++) {
+setTimeout(() => {
+const heart = document.createElement("div");
+heart.className = "heart-effect";
+heart.innerText = "❤️";
+heart.style.left = (Math.random() * 40 + 25) + "px";
+heart.style.top = (Math.random() * 20) + "px";
+document.getElementById("hamster-character").appendChild(heart);
+setTimeout(() => heart.remove(), 1000);
+}, i * 200);
+}
+showSpeech("낑낑~ 기분 최고! 너무 좋아요 주인님!");
+updateMainUI();
+// 1.2초 후 다시 원래 얼굴 리셋 원복 처리
+setTimeout(() => {
+hamBody.style.transform = "scale(1)";
+if(!gameState.isSick) hamBody.innerText = gameState.normalEmoji;
+}, 1200);
+});
+// 🏥 동물병원 치료 프로세스
+document.getElementById("menu-hospital-btn").addEventListener("click", () => {
+if(!gameState.isSick) {
+return alert("햄스터가 아주 건강합니다! 아플 때 방문해 주세요.");
+}
+if(gameState.gold >= 200) {
+gameState.gold -= 200;
+gameState.isSick = false;
+gameState.hunger = Math.max(50, gameState.hunger);
+gameState.happy = Math.max(50, gameState.happy);
+alert("🏥 진료 완료! 의사 선생님의 치료로 주사를 맞고 건강을 완전히 되찾았습니다!");
+updateMainUI();
+} else {
+alert("치료비(200 🪙)가 부족합니다. 우측 초록색 미니게임을 플레이해서 골드를 벌어오세요!");
+}
+});
+// 피딩 다이렉트 숏컷 게이트웨이
+document.getElementById("menu-feed-btn").addEventListener("click", () => {
+shopModal.style.display = "flex";
+switchShopTab("food");
+});
+document.getElementById("menu-shop-btn").addEventListener("click", () => {
+shopModal.style.display = "flex";
+switchShopTab("food");
+});
+function closeModal(id) { document.getElementById(id).style.display = "none"; }
+function switchShopTab(tab) {
+currentShopTab = tab;
+document.getElementById("tab-food").classList.toggle("active", tab === "food");
+document.getElementById("tab-upgrade").classList.toggle("active", tab === "upgrade");
+renderShopUI();
+}
+// 상점 데이터 빌더 엔진
+function renderShopUI() {
+const list = document.getElementById("shop-item-list");
+list.innerHTML = "";
+if(currentShopTab === "food") {
+foodItems.forEach(f => {
+const card = document.createElement("div");
+card.className = "item-card";
+card.innerHTML = <div class="item-info"> <div class="item-icon">${f.icon}</div> <div class="item-details"> <div class="item-name">${f.name}</div> <div class="item-desc">${f.desc}</div> </div> </div> <div class="buy-action"> <span class="price-tag">🪙 ${f.price}</span> <button class="item-btn" onclick="buyFoodItem('${f.id}')">급여하기</button> </div>;
+list.appendChild(card);
+});
+} else {
+// 쳇바퀴 빌더 배치
+const nWheel = gameState.wheelLevel + 1;
+if(nWheel <= 4) {
+let cost = nWheel === 2 ? 150 : nWheel === 3 ? 450 : 1000;
+const card = document.createElement("div");
+card.className = "item-card";
+card.innerHTML = <div class="item-info"> <div class="item-icon">🎡</div> <div class="item-details"> <div class="item-name">${wheelData[nWheel].name}</div> <div class="item-desc">자동 생산 골드량 대폭 가속 업그레이드</div> </div> </div> <div class="buy-action"> <span class="price-tag">🪙 ${cost}</span> <button class="item-btn" onclick="upgradeWheelUnit(${cost})">업그레이드</button> </div>;
+list.appendChild(card);
+}
+// 📦 햄스터 대형 집 케이지 강화 코너 빌드업
+const nHouse = gameState.houseLevel + 1;
+if(nHouse <= 3) {
+let hCost = nHouse === 2 ? 300 : 800;
+const card = document.createElement("div");
+card.className = "item-card";
+card.innerHTML = <div class="item-info"> <div class="item-icon">🏠</div> <div class="item-details"> <div class="item-name">${houseData[nHouse].name}</div> <div class="item-desc">3D 케이지 환경 테마 및 가구가 화려하게 교체</div> </div> </div> <div class="buy-action"> <span class="price-tag">🪙 ${hCost}</span> <button class="item-btn" style="background:#a855f7;" onclick="upgradeHouseUnit(${hCost})">집 리모델링</button> </div>;
+list.appendChild(card);
+}
+// 의류 코디 소품 아이템 리스트업 출력
+hatItems.forEach(h => {
+const isOwn = gameState.ownedHats.includes(h.id);
+const isEquip = gameState.equippedHat === h.id;
+const card = document.createElement("div");
+card.className = "item-card";
+card.innerHTML = <div class="item-info"> <div class="item-icon">${h.icon}</div> <div class="item-details"> <div class="item-name">${h.name}</div> <div class="item-desc">${isOwn ? '보유장비 옷장보관' : '아바타 머리 장식 아이템'}</div> </div> </div> <div class="buy-action"> <span class="price-tag">${isOwn ? '구매완료' : '🪙 ' + h.price}</span> <button class="item-btn ${isOwn ? (isEquip ? 'equipped' : 'owned') : ''}" onclick="handleHatAction('${h.id}', ${h.price})"> ${isOwn ? (isEquip ? '모자벗기' : '착용하기') : '구매코디'} </button> </div>;
+list.appendChild(card);
+});
+}
+}
+function buyFoodItem(id) {
+const f = foodItems.find(item => item.id === id);
+if(gameState.gold >= f.price) {
+gameState.gold -= f.price;
+gameState.hunger = Math.min(100, gameState.hunger + f.hunger);
+gameState.happy = Math.min(100, gameState.happy + f.happy);
+updateMainUI();
+showSpeech(오물오물 냠냠! ${f.name} 최고! 😋);
+renderShopUI();
+} else { alert("코인이 부족해요! 미니게임을 뛰어주세요!"); }
+}
+function upgradeWheelUnit(cost) {
+if(gameState.gold >= cost) {
+gameState.gold -= cost;
+gameState.wheelLevel++;
+updateMainUI();
+showSpeech("와! 쳇바퀴가 부드러워져서 골드가 복사돼요! 🎡");
+renderShopUI();
+} else { alert("골드가 모자랍니다."); }
+}
+// 🏠 케이지 럭셔리 하우스 업그레이드 트랙션
+function upgradeHouseUnit(cost) {
+if(gameState.gold >= cost) {
+gameState.gold -= cost;
+gameState.houseLevel++;
+updateMainUI();
+showSpeech("우와아아! 우리 집이 3D 궁전으로 탈바꿈했어요! ✨🏰✨");
+renderShopUI();
+} else { alert("리모델링 코인이 부족합니다."); }
+}
+function handleHatAction(id, price) {
+const isOwn = gameState.ownedHats.includes(id);
+if(!isOwn) {
+if(gameState.gold >= price) {
+gameState.gold -= price;
+gameState.ownedHats.push(id);
+gameState.equippedHat = id;
+document.getElementById("hamster-hat").innerText = hatItems.find(h => h.id === id).icon;
+alert("성공적으로 코디 소품을 구입하여 즉시 장착했습니다!");
+} else { alert("코인이 부족합니다."); }
+} else {
+if(gameState.equippedHat === id) {
+gameState.equippedHat = null;
+document.getElementById("hamster-hat").innerText = "";
+} else {
+gameState.equippedHat = id;
+document.getElementById("hamster-hat").innerText = hatItems.find(h => h.id === id).icon;
+}
+}
+updateMainUI();
+renderShopUI();
+}
+function showSpeech(txt) {
+const b = document.getElementById("speech-bubble");
+b.innerText = txt; b.style.display = "block";
+setTimeout(() => b.style.display = "none", 2500);
+}
+// ==========================================
+// --- 미니게임 파트 (해바라기 낙하 통제 액션) ---
+// ==========================================
+const canvas = document.getElementById("game-canvas");
+const ctx = canvas.getContext("2d");
+let miniGameActive = false, score = 0, timeLeft = 30;
+let gameInterval, animFrameId;
+const player = { x: 180, y: 0, width: 70, height: 70 };
+let items = [];
+document.getElementById("menu-game-btn").addEventListener("click", () => {
+if(gameState.isSick) {
+return alert("햄스터가 병이 들어 미니게임을 뛸 수 없습니다! 먼저 동물병원 치료부터 진행해 주세요.");
+}
+mainScreen.classList.remove("active");
+gameScreen.classList.add("active");
+canvas.width = gameScreen.clientWidth; canvas.height = gameScreen.clientHeight;
+miniGameActive = true; score = 0; timeLeft = 30; items = [];
+player.x = canvas.width / 2 - player.width / 2;
+player.y = canvas.height - 110;
+document.getElementById("game-score").innerText = score;
+gameInterval = setInterval(() => {
+timeLeft--;
+document.getElementById("game-timer").innerText = 시간: ${timeLeft}초;
+if(timeLeft <= 0) endMiniGame();
+}, 1000);
+canvas.addEventListener("mousemove", movePlayer);
+gameLoop();
+});
+function movePlayer(e) {
+const r = canvas.getBoundingClientRect();
+player.x = (e.clientX - r.left) - player.width / 2;
+if(player.x < 0) player.x = 0;
+if(player.x > canvas.width - player.width) player.x = canvas.width - player.width;
+}
+function gameLoop() {
+if(!miniGameActive) return;
+ctx.clearRect(0,0,canvas.width,canvas.height);
+// 배경 그리기
+ctx.fillStyle = "#bae6fd"; ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle = "#a7f3d0"; ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
+if(Math.random() < 0.05) {
+const isSeed = Math.random() < 0.75;
+items.push({
+x: Math.random() * (canvas.width - 40) + 20,
+y: -20,
+type: isSeed ? "seed" : "pepper",
+speed: Math.random() * 3 + 4 + (30 - timeLeft)*0.2
+});
+}
+for(let i = items.length-1; i>=0; i--) {
+let it = items[i]; it.y += it.speed;
+ctx.font = "32px Arial"; ctx.textAlign = "center";
+ctx.fillText(it.type === "seed" ? "🌻" : "🌶️", it.x, it.y);
+// 바운딩 박스 오버랩 히트 테스트 판정
+if(it.y >= player.y && it.y <= player.y + player.height && it.x >= player.x && it.x <= player.x + player.width) {
+if(it.type === "seed") score++;
+else score = Math.max(0, score - 3);
+document.getElementById("game-score").innerText = score;
+items.splice(i, 1);
+continue;
+}
+if(it.y > canvas.height) items.splice(i,1);
+}
+// 아바타 플레이어 스킨 투사 렌더
+ctx.font = "60px Arial"; ctx.textAlign = "left";
+if(gameState.type === 'golden') ctx.filter = "sepia(0.6) hue-rotate(15deg) saturate(2)";
+ctx.fillText(gameState.normalEmoji, player.x, player.y);
+ctx.filter = "none";
+if(gameState.equippedHat) {
+ctx.font = "28px Arial";
+ctx.fillText(hatItems.find(h=>h.id === gameState.equippedHat).icon, player.x + 12, player.y - 12);
+}
+animFrameId = requestAnimationFrame(gameLoop);
+}
+function endMiniGame() {
+miniGameActive = false;
+clearInterval(gameInterval);
+cancelAnimationFrame(animFrameId);
+canvas.removeEventListener("mousemove", movePlayer);
+// 환산 정산 연산 처리식
+const bonusGold = score * 20;
+gameState.gold += bonusGold;
+gameState.happy = Math.min(100, gameState.happy + 30);
+gameState.hunger = Math.max(20, gameState.hunger - 15); // 체력 소모로 배고파짐 반영
+alert(🎮 타임아웃! 게임 종료! \n수확한 해바라기씨: ${score}개 \n💰 정산 획득 코인: +${bonusGold} 🪙 \n활동으로 인해 행복해졌지만 조금 배가 고파졌습니다!);
+gameScreen.classList.remove("active");
+mainScreen.classList.add("active");
+updateMainUI();
+}
+
+
