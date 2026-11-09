@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D 햄스터 다마고치 월드</title>
+    <title>3D 햄스터의 다마고치 월드</title>
     <style>
         :root {
             --bg-color: #f0f4f8;
